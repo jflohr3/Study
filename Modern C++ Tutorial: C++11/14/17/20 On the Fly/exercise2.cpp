@@ -1,8 +1,19 @@
+// Delay C++ exercises since we found multiple firmware, low-level C positions
+
+
 //TODO alter Mean such that no manual state reset is necessary
 //     check type safety and provide assurance for any int width
 
 //TODO find a coding standard YOU prefer. List reasons. Alter code to adhere.
-//TODO Read next chapter of "Destination Unknown", you lemon
+/*
+  Yes, I shoud think you might
+  She shivered suddenly
+  It's like this room of yours, in the middle of a labyrinth of corridors
+  just like a dream when you think you will never get out... 
+  
+  p17 Destination Unknown
+
+*/
 #include <iostream>
 using namespace std;
 
