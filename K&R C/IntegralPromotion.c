@@ -1,14 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main()
-{
   // Here's the problem source. 'The 0x10 Best Questions|C test
   // I thought it had the promotion rules wrong in regard to signed/unsigned
+
   //  Heres the money where the mouth is... I was wrong.
-  // TODO check format specifiers for sillyness
-  
-  
+  //  
+int main()
+{
   printf("================================================\n\n");
   printf("Shorthand follows literal unless stated\n");
   printf("unsigned char: uc\n");
