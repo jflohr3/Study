@@ -3,25 +3,19 @@ Given a string that can contain only english letters and a regex that may includ
   1. English letters 
   2. Question marks- a question mark can double the previous letter or can be blank.
 For example, str="abbc", reg="ab?c?" is valid
-
-
-  This question's premise isn't fully detailed.... I'll have to guess.
-  Create a naive regex interpreter to find if the supplied string matches
-  Only the ? regex special char is to be used. It may allow multiple of the previous
-  character or pass on none.
-
 *******************************************************************************/
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
-// design by parts:
-  // for each character idx in input
-  // while, regex[currIdx] != '\0', Check regex for match
-    // if matched character, store previous char, increment input idx and regex idx
-    // if not matched character, is regex character '?', if so then check against 
-    //    previous char, if match increment input idx and regex idx 
-  // If regex[currIdx == ''\0'], set match to true
-
+/* design by parts:
+   for each character idx in input
+    while, regex[currIdx] != '\0', Check regex for match
+    if matched character, store previous char, increment input idx and regex idx
+    if not matched character, is regex character '?', if so then check against 
+    previous char, if match increment input idx and regex idx 
+      Continue to parse input string idx until the matched '?' is no longer
+      the current indexed input char
+    If regex[currIdx == ''\0'], set match to true
+*/
 int main(int argc, char *argv[])
 {
   printf("%d: arguments\n", argc);
@@ -41,6 +35,7 @@ int main(int argc, char *argv[])
   int in_working = 0;
   int regex_i = 0;
   char prev_char = '@'; // set to input char not expected
+  
   while(*(argv[1]+in_meta) != '\0') // for each char in input string
   {
     in_working = in_meta; // start at current toplevel input idx
@@ -59,11 +54,12 @@ int main(int argc, char *argv[])
           ++in_working;
           ++regex_i; // keep prev_char in storage, still valid
         }
-      }
-      else if(*(argv[1]+in_working) == prev_char) 
-      { // last char matches and current regex char is ?
-        ++in_working;
-        ++regex_i; // keep prev_char in storage, still valid
+        // We need to parse every input char matching this special operator
+        while(*(argv[1]+in_working) == prev_char)
+          ++in_working; // Thanks K&R you the real MVP
+        // We can then remove any multiple of ? until the next non-special char:while
+        while(*(argv[2]+regex_i) == '?')
+          ++regex_i;
       }
       else
       { // No direct match and no prev_char special operator match
@@ -81,8 +77,6 @@ int main(int argc, char *argv[])
     in_working = 0; // reset input working idx to beginning
     prev_char = '@'; // reset prev char for regex special operator usage
   }
-  
-
   printf("No match found :(\n");
   return EXIT_SUCCESS;
 }
