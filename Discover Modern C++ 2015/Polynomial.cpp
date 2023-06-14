@@ -1,70 +1,76 @@
 /* Problem Statement:
  *  Implement a class to handle representation of a polynomial
  */
+
+ /*! Support Real number coefficients, but not complex polynomials.
+  *    Because rigor..
+  */
+  
+// TODO issue with param packed structs passed to push_back in Constructor
+ 
 #include <iostream>
 #include <cstdlib>
 using namespace std;
 
+#include <cmath>
 #include <cstddef>
 #include <vector>
+#include <ranges>
 
-/* floats, doubles cannot be used in templates
-   hIStOriC ReASonS... *the types aren't implemented in a std way 
-                       *compiler would have issues determining which to use when 
-                       given a literal.. then why have literal qualifiers then?
-   probably the first issue is the only real reason they are not allowed...
- */
- 
-/* accept whole number coefficients - easy
- * accept rational numbers - can't use floats,doubles.
- *    Use std::pair for numerator denominator - SOLVED
- * accept irrational numbers - Middle school math teachers mad that polynomials
- *                              are allowed irrational coefficients.
- *    Use std::pair with Mantissa & exponent
- */
- 
-/* Polynomial irrational coefficient history
- * https://www.cambridge.org/core/journals/science-in-context/article/\
- * irrational-coefficients-in-renaissance-algebra/38391278E789631131A9F9BFC4DC8B0B
- * Irrational “Coefficients” in Renaissance Algebra
- * Published online by Cambridge University Press:  12 July 2017
- */
- 
- // TODO lets finish the Generic Programming hundred page chapter before
- //   readdressing this. Want to do a exhaustive solution...
- // TODO apparently std::pair and std::tuple is a code smell???
- //   dude literally says to make a custom struct...isn't that just a pair
- //   without the syntax sugar around it bruh...
- // I agree with making a custom struct -> some guy:
- // "What's so bad about having to write 6 lines of perfectly simple, clear,"
- //   "and explicit code? A point is not a pair. Just because a structure has 2"
- //   "members doesn't make it immediately semantically a pair."
- // Amen...
- 
  struct Cfloat
  {
-   int mantissa;
+   double mantissa;
    int exponent;
  };
  
-
 class Cpolynomial
 {
   public:
   
-  template<class Cfloat... T>
+  void print(void)
+  {
+    cout << "Print Polynomial\n";
+    
+    int exp = 0;
+    for( Cfloat& v:coef_list ) // Ranges are nice thanks c++20
+    {
+      if(exp != 0)
+      {
+        cout << v.mantissa * pow(10, v.exponent);
+        cout << "x^";
+        cout << exp++;
+      }
+      else
+      {
+        cout << v.mantissa * pow(10, v.exponent);
+        ++exp;
+      }
+    }
+  }
+  
+  template<class... T>
   Cpolynomial(T... these)
   {
     cout << "Constructor\n";
+    cout << "Must be in order of LSP to MSP, starting with constant term\n";
+    cout << "  include zero coefficients\n";
+    coef_list.push_back(these...); 
   }
   
   private:
-  std::vector<std::pair<int, int>> term_list;
+  std::vector<Cfloat> coef_list;
 };
 
 int main()
 {
-    cout<<"Hello World";
+  // Least squares approx of unit circle
+  Cfloat a = {( (12*(pow(M_PI,2)-10))/ pow(M_PI,3)),0};
+  Cfloat b = {( (60*(pow(M_PI,2)-12))/ pow(M_PI,4)),0};
+  Cfloat c = {( (60*(pow(M_PI,2)-12))/ pow(M_PI,5)),0};
 
-    return 0;
+  Cpolynomial MyPolynomial(a);
+  
+  MyPolynomial.print();
+
+  return EXIT_SUCCESS;
 }
