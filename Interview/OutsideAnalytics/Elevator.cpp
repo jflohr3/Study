@@ -29,6 +29,11 @@ using namespace std;
 
 #include <regex>
 
+/* TRAVEL_TIME_MAG if changed prog must recheck overflows for types */
+#define TRAVEL_TIME_MAG 10
+/* INPUT_NUM_BASE may be changed at will */
+#define INPUT_NUM_BASE 10
+
 void check_inputs(const char* const argv[],
                   const int argc);
 
@@ -51,14 +56,14 @@ int main(int argc, char* argv[])
   // Populate floor list with floor index inputs
   for(int i=1; i<argc; ++i)
   {
-    floor_list.push_back( strtol(argv[i], NULL, 10) );
+    floor_list.push_back( strtol(argv[i], NULL, INPUT_NUM_BASE) );
   }
   
   // Populate floor list with travel time magnitudes
   floor_list_itr = floor_list.begin();
   while(floor_list_itr != floor_list.end() -1)
   {
-    floor_list_itr[0] = abs(floor_list_itr[0] - (floor_list_itr[1])) * 10;
+    floor_list_itr[0] = abs(floor_list_itr[0] - (floor_list_itr[1])) * TRAVEL_TIME_MAG;
     ++floor_list_itr;
   }
   floor_list.pop_back(); // Remove trailing floor index from travel time vec
