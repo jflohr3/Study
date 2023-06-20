@@ -11,28 +11,45 @@
 • Program Constants: Single floor travel time: 10
 
 *******************************************************************************/
-#include <iostream>
 #include <cstdlib>
+#include <iostream>
+
+#include <regex>
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-  /* Param check
-   * Expect only inputs from the integer set
-   */
-   
+  if(argc<2) 
+  {
+    printf("I need at least one elevator position (integer set)\n");
+    return EXIT_FAILURE; 
+  }
+  
+  // TODO Move this printout to integer check regex
   printf("================================================================\n");
   printf("you handed me arguments:\n");
   for(int i=1; i<argc;++i)
     printf("arg %d:%s\n", i, argv[i]);
   printf("================================================================\n");
- 
-  if(argc<2) 
+  
+  std::regex int_regex("^-?[0-9]+");
+  /* Param check
+   * Expect only inputs from the integer set
+   *
+   * Sol: Create a regex for the integer number set,
+   *  check each input string, fail on any non-integer
+   */
+  for(int i=1; i<argc; ++i)
   {
-    printf("I need at least one arg brother\n");
-    return EXIT_FAILURE; 
+    if(!(std::regex_match(argv[i], int_regex)))
+    {
+      cout << "I only accept integer values with pos or neg prefix\n";
+      cout << "\"" << argv[i] << "\"" << " is not an integer\n";
+    }
   }
+   
+   
   
   
   
