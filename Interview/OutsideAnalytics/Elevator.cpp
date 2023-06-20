@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
    * Therefore input type must be int16_t
    */
   cout << "Integer inputs must fit inside int_16t" << endl;
-  cout << "[2^15-1, 2^15] or [-32,767 , 32,768], inclusive" << endl;
+  cout << "[2^15-1, 2^15] or [-32,767 , 32,768], inclusive" << endl << endl;
   
   /* Operation numerical constraints
    * Largest floor difference possible given inputs is 2^16
@@ -81,21 +81,40 @@ int main(int argc, char* argv[])
   vector<int32_t> floor_list;
   vector<int32_t>::iterator floor_list_itr;
   
-  // Populate floor list with inputs
+  // Populate floor list with floor index inputs
   for(int i=1; i<argc; ++i)
   {
     floor_list.push_back( strtol(argv[i], NULL, 10) );
   }
   
+  // Populate floor list with travel time magnitudes
   floor_list_itr = floor_list.begin();
-  while(floor_list_itr != floor_list.end())
+  while(floor_list_itr != floor_list.end() -1)
   {
-    // This = (this)
-    *floor_list_itr = abs(*floor_list_itr - *(floor_list_itr[1])) * 10;
+    floor_list_itr[0] = abs(floor_list_itr[0] - (floor_list_itr[1])) * 10;
+    ++floor_list_itr;
   }
+  floor_list.pop_back(); // Remove trailing floor index from travel time vec
   
-  
-  
+  uint64_t total_travel_time = 0;
+  for(auto& v:floor_list)
+  {
+    total_travel_time += v; 
+    cout << v << " sum:" << total_travel_time << endl;
+  }
+ 
+  cout << "================================================================";
+  cout << endl;
+  cout << "Result:" << endl;
+  cout << "Total Travel Time: " << total_travel_time << endl;
+  cout << "Floors Visited: ";
+  for(auto& v:floor_list)
+  {
+    cout << v << " ";
+  }
+  cout << endl;
+  cout << "================================================================";
+  cout << endl;
   
   return EXIT_SUCCESS;
 }
