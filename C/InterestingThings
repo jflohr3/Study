@@ -1,0 +1,5 @@
+/* Here I put interesting things I didn't know existed in C99
+ * Usually that I have never seen in the wild
+ */
+
+restrict keyword
