@@ -3,3 +3,19 @@
  */
 
 restrict keyword
+
+/* volatile keyword also works for writes
+ * so the compiler will always write, not say ignore the write to 0x3
+ * since the var isn't used in the meantime
+ */
+
+volatile char* set_register_69 = 0x69;
+set_register_69* = 0x3;
+set_register_69* = 0x8;
+
+/* You can turn off optimization per block using preprocessor #pragma */
+#pragma optimize( "", off )
+void foo(){
+
+}
+#pragma optimize( "", on )
