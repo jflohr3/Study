@@ -2,6 +2,10 @@
  * Usually that I have never seen in the wild
  */
 
+/*
+ * for the lifetime of the pointer, no other pointer will be used to
+ * access the object to which it points. 
+ */
 restrict keyword
 
 /* volatile keyword also works for writes
